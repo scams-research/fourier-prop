@@ -1,0 +1,103 @@
+# Enable rule caching on Zenodo?
+cache_on_zenodo: false
+
+# Workflow graph (DAG) generation
+dag:
+  # Generate `dag.pdf` on each build?
+  render: false
+
+# Externally-hosted datasets, e.g. on Zenodo
+datasets:
+  10.5281/zenodo.24078901:
+    contents:
+      tip4p_hold.atom: src/data/tip4p_hold.atom
+      tip4p_hold.data: src/data/tip4p_hold.data
+
+# Custom file dependencies
+dependencies:
+  src/scripts/compare.py:
+    - src/scripts/_fig_params.py
+  src/scripts/water_pdf.py:
+    - src/scripts/_fig_params.py
+    - src/data/tip4p_hold.atom
+    - src/data/tip4p_hold.data
+  src/scripts/water_acf.py:
+    - src/scripts/_fig_params.py
+    - src/data/tip4p_hold.atom
+    - src/data/tip4p_hold.data
+  src/scripts/scaling.py:
+    - src/scripts/_fig_params.py
+    - src/data/numerical_M.npz
+    - src/data/numerical_N.npz
+    - src/data/analytical_N.npz
+  src/scripts/water_cov.py:
+    - src/scripts/_fig_params.py
+    - src/data/tip4p_hold.atom
+    - src/data/tip4p_hold.data
+  src/scripts/convergence.py:
+    - src/scripts/_fig_params.py
+  src/tex/ms.tex:
+    - src/tex/bib.bib
+
+# Name of the `.tex` manuscript and corresponding `.pdf` article
+ms_name: ms
+
+# Optimize DAG by removing unnecessary jobs upstream of cache hits?
+optimize_caching: false
+
+# Overleaf sync settings
+overleaf:
+  # Overleaf project ID (blank = disabled)
+  id: 6a43ca6f4beb873b37239f07
+  # Perform sync on GitHub Actions?
+  gh_actions_sync: true
+  # List of files to push to Overleaf
+  push:
+    - src/tex/figures
+    - src/tex/output
+  # List of files to pull from Overleaf
+  pull:
+    - src/tex/ms.tex
+    - src/tex/bib.bib
+
+# Change margin icon colour and position
+margin_icons:
+    colors:
+        cache: "0.25,0.25,0.25"
+        dataset: "0.25,0.25,0.25"
+        github: "0.25,0.25,0.25"
+        sandbox: "0.25,0.25,0.25"
+    horizontal_offset: -4
+
+# Always require all input files to be present on disk for workflow to pass?
+require_inputs: true
+
+# Allow cacheable rules to run on GitHub Actions?
+run_cache_rules_on_ci: false
+
+# Mapping of script file extensions to instructions for executing them
+scripts:
+  py: python {script}
+
+# Display of the `showyourwork` stamp on first page
+stamp:
+  # Show the stamp?
+  enabled: false
+
+# Enable SyncTeX?
+synctex: true
+
+# Command-line options to be passed to tectonic when building the manuscript
+tectonic_args: []
+
+# Preprocessing script for arXiv tarball
+# (such as to switch `minted` from `finalizecache` to `frozencache`)
+# The script will be passed a directory containing the manuscript source
+# as input, and should modify the contents of that directory in-place.
+# preprocess_arxiv_script: my_preprocess_script.sh
+
+# Enable verbose output?
+verbose: true 
+
+# Version of `showyourwork` used to create this workflow
+version: 0.4.4.dev371+g047bdf40b
